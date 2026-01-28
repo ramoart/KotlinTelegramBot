@@ -12,11 +12,11 @@ fun main() {
                     "2 - Статистика\n" +
                     "0 - Выход"
         )
-        val inputNumber = readln().toInt()
+        val inputNumber = readln().toIntOrNull()
         when {
             inputNumber == 1 -> println("Выбран пункт Учить слова")
             inputNumber == 2 -> println("Выбран пункт Статистика")
-            inputNumber == 0 -> break
+            inputNumber == 0 -> return
             else -> println("Введите число 1, 2 или 0")
         }
     }
