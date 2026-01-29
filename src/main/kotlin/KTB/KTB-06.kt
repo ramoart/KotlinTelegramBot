@@ -6,11 +6,6 @@ fun main() {
     val dictionary = loadDictionary()
 
     while (true) {
-        val totalCount = dictionary.size
-        val learnedWords = dictionary.filter { it.correctAnswersCount >= 3 }
-        val learnedCount = learnedWords.size
-        val percentLearnedWords = (learnedCount.toDouble() / totalCount * 100).toInt()
-
         println(
             "Меню:\n" +
                     "1 - Учить слова\n" +
@@ -23,9 +18,16 @@ fun main() {
             inputNumber == 1 -> println("Выбран пункт Учить слова")
             inputNumber == 2 -> {
                 println("Выбран пункт Статистика")
-                println(
-                    "Выучено $learnedCount из $totalCount слов | $percentLearnedWords%"
-                )
+                val totalCount = dictionary.size
+                if (totalCount == 0) println("Словарь не был загружен, статистика отсуствует")
+                else {
+                    val learnedWords = dictionary.filter { it.correctAnswersCount >= 3 }
+                    val learnedCount = learnedWords.size
+                    val percentLearnedWords = (learnedCount.toDouble() / totalCount * 100).toInt()
+                    println(
+                        "Выучено $learnedCount из $totalCount слов | $percentLearnedWords%"
+                    )
+                }
                 println()
             }
 
