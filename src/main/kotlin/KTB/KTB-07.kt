@@ -15,25 +15,25 @@ fun main() {
 
         val inputNumber = readln().toIntOrNull()
         when {
-            inputNumber == 1 -> {
-                println("Выбран пункт Учить слова")
-                val notLearnedList = dictionary.filter { it.correctAnswersCount < CORRECT_COUNT_CHECK }
-                if (notLearnedList.isEmpty()) {
-                    println("Все слова в словаре выучены")
+            inputNumber == 1 ->
+                while (true) {
+                    println("Выбран пункт Учить слова")
+                    val notLearnedList = dictionary.filter { it.correctAnswersCount < CORRECT_COUNT_CHECK }
+                    if (notLearnedList.isEmpty()) {
+                        println("Все слова в словаре выучены")
+                        println()
+                        continue
+                    }
+                    val questionWords = notLearnedList.shuffled().take(4)
+                    val correctAnswer = questionWords.random()
                     println()
-                    continue
+                    println("${correctAnswer.text}:")
+                    questionWords.shuffled().forEachIndexed { index, word ->
+                        println("${index + 1} - ${word.translate}")
+                    }
+                    println("Выберете правильный ответ")
+                    val userAnswerInput = readln()
                 }
-                val questionWords = notLearnedList.shuffled().take(4)
-                val correctAnswer = questionWords.random()
-                println()
-                println("${correctAnswer.text}:")
-                questionWords.shuffled().forEachIndexed { index, word ->
-                    println("${index + 1} - ${word.translate}")
-                }
-                println("Выберете правильный ответ")
-                val userAnswerInput = readln()
-            }
-
 
             inputNumber == 2 -> {
                 println("Выбран пункт Статистика")
