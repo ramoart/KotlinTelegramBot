@@ -19,9 +19,9 @@ fun main() {
             inputNumber == 2 -> {
                 println("Выбран пункт Статистика")
                 val totalCount = dictionary.size
-                if (totalCount == 0) println("Словарь не был загружен, статистика отсуствует")
+                if (totalCount == 0) println("Словарь не был загружен, статистика отсутствует")
                 else {
-                    val learnedWords = dictionary.filter { it.correctAnswersCount >= 3 }
+                    val learnedWords = dictionary.filter { it.correctAnswersCount >= CORRECT_COUNT_CHECK }
                     val learnedCount = learnedWords.size
                     val percentLearnedWords = (learnedCount.toDouble() / totalCount * 100).toInt()
                     println(
@@ -50,3 +50,5 @@ fun loadDictionary(): MutableList<Word> {
 
     return dictionary
 }
+
+const val CORRECT_COUNT_CHECK = 3
