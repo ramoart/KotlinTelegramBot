@@ -25,14 +25,31 @@ fun main() {
                         break
                     }
                     val questionWords = notLearnedList.shuffled().take(4)
-                    val correctAnswer = questionWords.random()
+                    val correctAnswerId = questionWords.indices.random()
+                    val correctAnswerWord = questionWords[correctAnswerId]
                     println()
-                    println("${correctAnswer.text}:")
-                    questionWords.shuffled().forEachIndexed { index, word ->
+                    println("Выберете правильный ответ или выйдете в Меню:")
+                    println(correctAnswerWord.text)
+                    questionWords.forEachIndexed { index, word ->
                         println("${index + 1} - ${word.translate}")
                     }
-                    println("Выберете правильный ответ")
-                    val userAnswerInput = readln()
+                    println("----------")
+                    println("0 - Меню")
+                    val userAnswerInput = readln().toInt()
+                    val userAnswerIndex = userAnswerInput - 1
+                    when {
+                        userAnswerInput == 0 -> break
+                        userAnswerIndex == correctAnswerId -> {
+                            println("Правильно!")
+                            correctAnswerWord.correctAnswersCount++
+                            saveDictionary(dictionary)
+                        }
+
+                        userAnswerIndex != correctAnswerId -> println(
+                            "Неправильно! ${correctAnswerWord.text} - " +
+                                    "это ${correctAnswerWord.translate}"
+                        )
+                    }
                 }
 
             2 -> {
@@ -68,6 +85,14 @@ fun loadDictionary(): MutableList<Word> {
     }
 
     return dictionary
+}
+
+fun saveDictionary(dictionary: List<Word>) {
+    val wordsFile = File("words.txt")
+    val lines = dictionary.map { word ->
+        "${word.text}|${word.translate}|${word.correctAnswersCount}"
+    }
+    wordsFile.writeText(lines.joinToString("\n"))
 }
 
 const val CORRECT_COUNT_CHECK = 3
