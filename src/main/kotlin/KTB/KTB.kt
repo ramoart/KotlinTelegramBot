@@ -35,8 +35,8 @@ fun main() {
                     }
                     println("----------")
                     println("0 - Меню")
-                    val userAnswerInput = readln().toInt()
-                    val userAnswerIndex = userAnswerInput - 1
+                    val userAnswerInput = readln().toIntOrNull()
+                    val userAnswerIndex = userAnswerInput?.minus(1)
                     when {
                         userAnswerInput == 0 -> break
                         userAnswerIndex == correctAnswerId -> {
