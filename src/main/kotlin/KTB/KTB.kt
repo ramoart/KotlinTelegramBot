@@ -24,26 +24,24 @@ fun main() {
                     }
                     println()
                     println("Выберете правильный ответ или выйдете в Меню:")
-                    println(question.correctAnswer.text)
-                    question.variants.forEachIndexed { index, word ->
-                        println("${index + 1} - ${word.translate}")
-                    }
+                    println(question.asConsoleString())
                     println("----------")
                     println("0 - Меню")
+
                     val userAnswerInput = readln().toIntOrNull()
                     val userAnswerIndex = userAnswerInput?.minus(1)
                     when {
                         userAnswerInput == 0 -> break
-                        userAnswerIndex == question.correctAnswerId -> {
+                        trainer.checkAnswer(question, userAnswerIndex) -> {
                             println("Правильно!")
-                            question.correctAnswer.correctAnswersCount++
-                            trainer.saveDictionary(trainer.dictionary)
                         }
 
-                        userAnswerIndex != question.correctAnswerId -> println(
-                            "Неправильно! ${question.correctAnswer.text} - " +
-                                    "это ${question.correctAnswer.translate}"
-                        )
+                        else -> {
+                            println(
+                                "Неправильно! ${question.correctAnswer.text} - " +
+                                        "это ${question.correctAnswer.translate}"
+                            )
+                        }
                     }
                 }
             }
@@ -65,6 +63,5 @@ fun main() {
         }
     }
 }
-
 
 const val CORRECT_COUNT_CHECK = 3
