@@ -1,7 +1,13 @@
 package KTB
 
 fun main() {
-    val trainer = LearnWordsTrainer()
+
+    val trainer = try {
+        LearnWordsTrainer(3, 4)
+    } catch (e: Exception) {
+        println("Невозможно загрузить словарь")
+        return
+    }
 
     while (true) {
         println(
@@ -63,5 +69,3 @@ fun main() {
         }
     }
 }
-
-const val CORRECT_COUNT_CHECK = 3
