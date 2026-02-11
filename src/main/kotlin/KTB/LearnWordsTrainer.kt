@@ -2,6 +2,12 @@ package KTB
 
 import java.io.File
 
+data class Word(
+    val text: String,
+    val translate: String,
+    var correctAnswersCount: Int = 0,
+)
+
 data class Statistics(
     val totalCount: Int,
     val learnedCount: Int,
