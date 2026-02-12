@@ -1,4 +1,0 @@
-package KTB
-fun main() {
-
-}
