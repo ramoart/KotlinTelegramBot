@@ -14,13 +14,19 @@ fun main(args: Array<String>) {
         val updates: String = getUpdates(botToken, updateId)
         println(updates)
 
-        val startUpdateId = updates.lastIndexOf("update_id")
-        val endUpdateId = updates.lastIndexOf(",\n\"message\"")
-        if (startUpdateId == -1 || endUpdateId == -1) continue
-        val updateIdString = updates.substring(startUpdateId + 11, endUpdateId)
-        updateId = updateIdString.toInt() + 1
-    }
+        val getUpdateId: Regex = "\"update_id\":(\\d+)".toRegex()
+        val matchResultId: MatchResult? = getUpdateId.findAll(updates).lastOrNull()
+        val groupId = matchResultId?.groups
+        val id = groupId?.get(1)?.value?.toInt()
+        updateId = if (id != null) id + 1 else updateId
 
+        val messageTextRegex: Regex = "\"text\":\"(.+?)\"".toRegex()
+        val matchResultText: MatchResult? = messageTextRegex.findAll(updates).lastOrNull()
+        val groupText = matchResultText?.groups
+        val text = groupText?.get(1)?.value ?: "нет текста"
+
+        println(text)
+    }
 }
 
 fun getUpdates(botToken: String, updateId: Int): String {
@@ -30,6 +36,5 @@ fun getUpdates(botToken: String, updateId: Int): String {
     val response: HttpResponse<String> = client.send(request, HttpResponse.BodyHandlers.ofString())
     return response.body()
 }
-
 
 const val TELEGRAM_BASE_URL = "https://api.telegram.org/bot"
