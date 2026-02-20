@@ -8,12 +8,12 @@ import java.net.http.HttpResponse
 fun main(args: Array<String>) {
     val botToken = args[0]
     var updateId = 0
-    var chatId: Int? = null
-    val telegramBotService = TelegramBotService()
+    var chatId: Long? = null
+    val telegramBotService = TelegramBotService(botToken)
 
     while (true) {
         Thread.sleep(2000)
-        val updates: String = telegramBotService.getUpdates(botToken, updateId)
+        val updates: String = telegramBotService.getUpdates(updateId)
         println(updates)
 
         val getUpdateId: Regex = "\"update_id\":(\\d+)".toRegex()
@@ -31,11 +31,11 @@ fun main(args: Array<String>) {
         val getChatId: Regex = "\"chat\":\\{\"id\":(\\d+)".toRegex()
         val matchResultChatId: MatchResult? = getChatId.findAll(updates).lastOrNull()
         val groupChatId = matchResultChatId?.groups
-        val foundChatId = groupChatId?.get(1)?.value?.toInt()
+        val foundChatId = groupChatId?.get(1)?.value?.toLong()
         if (foundChatId != null) chatId = foundChatId
 
-        if (text != "нет текста") {
-            val sendMessage = telegramBotService.sendMessage(botToken, chatId, text)
+        if (text == "Hello") {
+            val sendMessage = telegramBotService.sendMessage(chatId, text)
             println(sendMessage)
         }
 

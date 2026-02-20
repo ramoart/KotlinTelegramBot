@@ -7,8 +7,8 @@ import java.net.http.HttpRequest
 import java.net.http.HttpResponse
 import java.nio.charset.StandardCharsets
 
-class TelegramBotService {
-    fun getUpdates(botToken: String, updateId: Int): String {
+class TelegramBotService(private val botToken: String) {
+    fun getUpdates(updateId: Int): String {
         val urlGetUpdates = "$TELEGRAM_BASE_URL$botToken/getUpdates?offset=$updateId"
         val client: HttpClient = HttpClient.newBuilder().build()
         val request: HttpRequest = HttpRequest.newBuilder().uri(URI.create(urlGetUpdates)).build()
@@ -16,7 +16,7 @@ class TelegramBotService {
         return response.body()
     }
 
-    fun sendMessage(botToken: String, chatId: Int?, sendText: String): String {
+    fun sendMessage(chatId: Long?, sendText: String): String {
         val encodedText = URLEncoder.encode(sendText, StandardCharsets.UTF_8)
         val urlSendMessage = "$TELEGRAM_BASE_URL$botToken/sendMessage?chat_id=$chatId&text=$encodedText"
         val client: HttpClient = HttpClient.newBuilder().build()
