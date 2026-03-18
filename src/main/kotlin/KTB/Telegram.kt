@@ -1,14 +1,9 @@
 package KTB
 
-import java.net.URI
-import java.net.http.HttpClient
-import java.net.http.HttpRequest
-import java.net.http.HttpResponse
-
 fun main(args: Array<String>) {
     val botToken = args[0]
     var updateId = 0
-    var chatId: Long? = null
+    var chatId: Long = 0
     val telegramBotService = TelegramBotService(botToken)
 
     while (true) {
@@ -34,7 +29,7 @@ fun main(args: Array<String>) {
         val foundChatId = groupChatId?.get(1)?.value?.toLong()
         if (foundChatId != null) chatId = foundChatId
 
-        if (text == "Hello") {
+        if (text == "Hello" && chatId != null) {
             val sendMessage = telegramBotService.sendMessage(chatId, text)
             println(sendMessage)
         }
