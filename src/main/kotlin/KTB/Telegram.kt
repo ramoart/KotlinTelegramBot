@@ -3,7 +3,7 @@ package KTB
 fun main(args: Array<String>) {
     val botToken = args[0]
     var updateId = 0
-    var chatId: Long = 0
+    var chatId: Long? = null
     val telegramBotService = TelegramBotService(botToken)
 
     while (true) {
