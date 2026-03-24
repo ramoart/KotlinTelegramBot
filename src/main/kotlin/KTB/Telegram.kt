@@ -38,7 +38,7 @@ fun main(args: Array<String>) {
             println(sendMessage)
         }
 
-        if (text == "Menu" && chatId != null) {
+        if (text == START_BOT && chatId != null) {
             val sendMenu = telegramBotService.sendMenu(chatId)
             println(sendMenu)
         }
@@ -55,3 +55,4 @@ fun main(args: Array<String>) {
 }
 
 const val TELEGRAM_BASE_URL = "https://api.telegram.org/bot"
+const val START_BOT = "/start"
