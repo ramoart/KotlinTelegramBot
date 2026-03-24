@@ -5,6 +5,8 @@ fun main(args: Array<String>) {
     var updateId = 0
     var chatId: Long? = null
     val telegramBotService = TelegramBotService(botToken)
+    val trainer = LearnWordsTrainer()
+    val stats = trainer.getStatistics()
 
     val getUpdateId: Regex = "\"update_id\":(\\d+)".toRegex()
     val messageTextRegex: Regex = "\"text\":\"(.+?)\"".toRegex()
@@ -38,7 +40,7 @@ fun main(args: Array<String>) {
             println(sendMessage)
         }
 
-        if (text == "Menu" && chatId != null) {
+        if (text == START_BOT && chatId != null) {
             val sendMenu = telegramBotService.sendMenu(chatId)
             println(sendMenu)
         }
@@ -48,10 +50,14 @@ fun main(args: Array<String>) {
         }
 
         if (callBackData == "statistics_clicked" && chatId != null) {
-            val sendMessage = telegramBotService.sendMessage(chatId, "Отсутствует статистика")
+            val sendMessage = telegramBotService.sendMessage(
+                chatId,
+                "Выучено ${stats.learnedCount} из ${stats.totalCount} слов | ${stats.percentLearnedWords}%"
+            )
         }
 
     }
 }
 
 const val TELEGRAM_BASE_URL = "https://api.telegram.org/bot"
+const val START_BOT = "/start"
