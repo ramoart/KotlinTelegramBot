@@ -7,7 +7,6 @@ fun main(args: Array<String>) {
     val telegramBotService = TelegramBotService(botToken)
     val trainer = LearnWordsTrainer()
     val stats = trainer.getStatistics()
-    val question = trainer.getNextQuestion()
 
     val getUpdateId: Regex = "\"update_id\":(\\d+)".toRegex()
     val messageTextRegex: Regex = "\"text\":\"(.+?)\"".toRegex()
@@ -47,9 +46,7 @@ fun main(args: Array<String>) {
         }
 
         if (callBackData == "learn_words_clicked" && chatId != null) {
-            val question = trainer.getNextQuestion()
-            if (question == null) telegramBotService.sendMessage(chatId, "Вы выучили все слова в базе")
-            else telegramBotService.sendQuestion(chatId, question)
+            checkNextQuestionAndSend(trainer, telegramBotService, chatId)
         }
 
         if (callBackData == "statistics_clicked" && chatId != null) {
@@ -59,6 +56,21 @@ fun main(args: Array<String>) {
             )
         }
 
+    }
+
+}
+
+fun checkNextQuestionAndSend(
+    trainer: LearnWordsTrainer,
+    telegramBotService: TelegramBotService,
+    chatId: Long?
+) {
+    val question = trainer.getNextQuestion()
+
+    if (question == null) {
+        telegramBotService.sendMessage(chatId, "Вы выучили все слова в базе")
+    } else {
+        telegramBotService.sendQuestion(chatId, question)
     }
 }
 
