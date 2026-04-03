@@ -8,11 +8,10 @@ import java.net.http.HttpResponse
 import java.nio.charset.StandardCharsets
 
 class TelegramBotService(private val botToken: String) {
-    val client: HttpClient = HttpClient.newBuilder().build()
+    private val client: HttpClient = HttpClient.newBuilder().build()
 
     fun getUpdates(updateId: Int): String {
         val urlGetUpdates = "$TELEGRAM_BASE_URL$botToken/getUpdates?offset=$updateId"
-        client
         val request: HttpRequest = HttpRequest.newBuilder().uri(URI.create(urlGetUpdates)).build()
         val response: HttpResponse<String> = client.send(request, HttpResponse.BodyHandlers.ofString())
         return response.body()
@@ -21,7 +20,6 @@ class TelegramBotService(private val botToken: String) {
     fun sendMessage(chatId: Long?, sendText: String): String {
         val encodedText = URLEncoder.encode(sendText, StandardCharsets.UTF_8)
         val urlSendMessage = "$TELEGRAM_BASE_URL$botToken/sendMessage?chat_id=$chatId&text=$encodedText"
-        client
         val request: HttpRequest = HttpRequest.newBuilder().uri(URI.create(urlSendMessage)).build()
         val response: HttpResponse<String> = client.send(request, HttpResponse.BodyHandlers.ofString())
         return response.body()
@@ -49,7 +47,6 @@ class TelegramBotService(private val botToken: String) {
             	}
             }
         """.trimIndent()
-        client
         val request: HttpRequest = HttpRequest.newBuilder().uri(URI.create(urlSendMessage))
             .header("Content-type", "application/json")
             .POST(HttpRequest.BodyPublishers.ofString(sendMenuBody))
@@ -79,7 +76,6 @@ class TelegramBotService(private val botToken: String) {
         }
     """.trimIndent()
 
-        client
         val request: HttpRequest = HttpRequest.newBuilder()
             .uri(URI.create(urlSendMessage))
             .header("Content-Type", "application/json")
