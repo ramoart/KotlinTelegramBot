@@ -56,6 +56,22 @@ fun main(args: Array<String>) {
             )
         }
 
+        if (callBackData?.startsWith(CALLBACK_DATA_ANSWER_PREFIX) == true && chatId != null) {
+            val userAnswerIndex = callBackData.substringAfter(CALLBACK_DATA_ANSWER_PREFIX).toIntOrNull()
+            val question = trainer.getNextQuestion()
+
+            if (question != null && trainer.checkAnswer(question, userAnswerIndex)) {
+                telegramBotService.sendMessage(chatId, "Правильно!")
+            } else if (question != null) {
+                telegramBotService.sendMessage(
+                    chatId,
+                    "Неправильно! ${question.correctAnswer.text} – это ${question.correctAnswer.translate}"
+                )
+            }
+
+            checkNextQuestionAndSend(trainer, telegramBotService, chatId)
+        }
+
     }
 
 }
